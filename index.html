@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Seminar IT PNM</title>
+    <!-- Menghubungkan file CSS Materialize dengan CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- menghubugkan animasi.js dengan CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        header {
+            background-color: #003048;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .success-message {
+            display: none;
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .card-panel {
+            background-color: #e3f2fd; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-column {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h3>IT PNM SUMMIT</h3>
+        <p>Registrasi Seminar Teknologi Nasional</p>
+    </header>
+    <main class="container">
+        <div class="row">
+            <div class="col s12 m8"> <!--menyesuaikan ukurannya berdasarkan lebar layar-->
+                <div class="form-column">
+                    <form id="registrationForm">
+                        <div class="input-field">
+                            <input type="text" id="fullName" class="validate" required minlength="3">
+                            <label for="fullName">Nama Lengkap</label>
+                            <span class="helper-text" data-error="Nama minimal 3 karakter"></span>
+                        </div>
+                        <div class="input-field">
+                            <input type="email" id="email" class="validate" required>
+                            <label for="email">Email</label>
+                            <span class="helper-text" data-error="Masukkan email yang valid (contoh: user@example.com)"></span>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" id="password" class="validate" required minlength="6">
+                            <label for="password">Password</label>
+                            <span class="helper-text" data-error="Password minimal 6 karakter"></span>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" id="confirmPassword" class="validate" required>
+                            <label for="confirmPassword">Konfirmasi Password</label>
+                            <span class="helper-text" data-error="Password harus sama"></span>
+                        </div>
+                        <div class="input-field">
+                            <input type="date" id="birthDate" class="validate" required>
+                            <label for="birthDate">Tanggal Lahir</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="tel" id="phoneNumber" class="validate" required pattern="^\+62\d{9,12}$">
+                            <label for="phoneNumber">Nomor HP</label>
+                            <span class="helper-text" data-error="Gunakan (+62)"></span>
+                        </div>
+                        <button type="submit" id="submitButton" class="btn waves-effect waves-light" disabled>Daftar</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <aside class="card-panel"> <!-- menampilkan informasi seminar dalam sebuah panel -->
+                    <h5>Informasi Seminar</h5>
+                    <p>Tanggal: Jumat, 21 Maret 2025</p>
+                    <p>Waktu: 08.30 WIB - Selesai </p>
+                    <p>Lokasi: Politeknik Negeri Madiun</p>
+                    <p>Tempat: Auditorium Kampus 1</p>
+                    <p>Alamat: Jl. Serayu No.84, Pandean, Taman, Pandean, Kec. Taman, Kota Madiun, Jawa Timur</p>
+                    <p>Dresscode: Bebas Rapi</p>
+                </aside>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; <span id="currentYear"></span> IT PNM Summit.</p>
+        <p> contact: itpnm@yahoo.com</p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        // menjalankan kode javascript //
+        document.addEventListener('DOMContentLoaded', function () {
+            // memperbarui input materialize css //
+            M.updateTextFields();
+            // form menggunakan ID //
+            const form = document.getElementById('registrationForm');
+            // tombol submit //
+            const submitButton = document.getElementById('submitButton');
+            // inputandalam form //
+            const inputs = form.querySelectorAll('input');
+            // input tgl lahir //
+            const birthDateInput = document.getElementById('birthDate');
+            // input email //
+            const emailInput = document.getElementById('email');
+            const currentYear = new Date().getFullYear();
+             // tanggal maksimal untuk input tanggal lahir ke 31 Desember  //
+            birthDateInput.max = `${currentYear}-12-31`;
+            document.getElementById("currentYear").textContent = new Date().getFullYear();  
+            function checkFormValidity() {
+                let isFormValid = true;
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        isFormValid = false;
+                    }
+                });
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) {
+                    isFormValid = false;
+                    document.getElementById('confirmPassword').setCustomValidity("Password tidak cocok");
+                } else {
+                    document.getElementById('confirmPassword').setCustomValidity("");
+                }
+                const email = emailInput.value;
+                if (!email.includes('@')) {
+                    isFormValid = false;
+                    emailInput.setCustomValidity("Email harus mengandung '@'");
+                } else {
+                    emailInput.setCustomValidity("");
+                }
+                submitButton.disabled = !isFormValid;
+            }
+            inputs.forEach(input => {
+                input.addEventListener('input', checkFormValidity);
+            });
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const birthDate = new Date(birthDateInput.value);
+                if (birthDate.getFullYear() > 2006) {
+                    M.toast({html: 'Tanggal lahir harus sebelum tahun 2006', classes: 'red'});
+                    return;
+                }
+                if (form.checkValidity()) {
+                    M.toast({html: 'Registrasi berhasil!', classes: 'green'});
+                    form.reset();
+                    submitButton.disabled = true;
+                    M.updateTextFields();
+                } else {
+                    M.toast({html: 'Ada kesalahan dalam pengisian form. Periksa kembali.', classes: 'red'});
+                }
+            });
+            anime.timeline({ easing: 'easeOutExpo', duration: 1000 }) // Anime.js untuk membuat animasi //
+                .add({
+                    targets: 'body',
+                    opacity: [0, 1],
+                    translateY: [-20, 0]
+                })
+                .add({
+                    targets: '.container',
+                    opacity: [0, 1],
+                    translateY: [20, 0]
+                }, '-=500')
+                .add({
+                    targets: 'header',
+                    scale: [0.8, 1]
+                }, '-=500');
+        });
+    </script>
+</body>
+</html>
